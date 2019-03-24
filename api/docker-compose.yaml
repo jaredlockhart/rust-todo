@@ -1,0 +1,13 @@
+version: '3.0'
+
+services:
+  api:
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: systemfd --no-pid -s http::0.0.0.0:3000 -- cargo watch -x run
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src

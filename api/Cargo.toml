@@ -1,0 +1,13 @@
+[package]
+name = "rust-todo"
+version = "0.1.0"
+authors = ["Jared Kerim <jkerim@mozilla.com>"]
+edition = "2018"
+
+[dependencies]
+env_logger = "0.5"
+
+actix = "0.7"
+actix-web = "^0.7"
+
+listenfd = "0.3"
