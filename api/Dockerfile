@@ -16,7 +16,7 @@ COPY ./Cargo.toml ./Cargo.toml
 RUN cargo build
 
 # remove the dummy hello world build
-RUN cargo clean -p rust-todo
+RUN cargo clean -p rust_todo
 
 # copy the source tree
 COPY ./src ./src

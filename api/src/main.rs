@@ -1,11 +1,16 @@
 extern crate actix_web;
 extern crate listenfd;
+extern crate rust_todo;
 
+use rust_todo::*;
 use listenfd::ListenFd;
 use actix_web::{server, App, HttpRequest, Responder};
 
 fn index(_req: &HttpRequest) -> impl Responder {
-    "Fast start"
+    let connection = establish_connection();
+    let todos = get_todos(&connection);
+    let todo_titles: Vec<String> = todos.iter().map(|todo| todo.title.clone()).collect();
+    todo_titles.join(",")
 }
 
 fn main() {

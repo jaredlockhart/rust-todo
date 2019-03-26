@@ -2,6 +2,7 @@
 extern crate diesel;
 extern crate dotenv;
 
+
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
 use dotenv::dotenv;
@@ -33,4 +34,16 @@ pub fn create_todo<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> To
         .values(&new_post)
         .get_result(conn)
         .expect("Error saving new post")
+}
+
+pub fn get_todos(conn: &PgConnection) -> Vec<Todo>{
+    use schema::todos::dsl::*;
+
+    let connection = establish_connection();
+    let results = todos.filter(done.eq(false))
+        .limit(5)
+        .load::<Todo>(&connection)
+        .expect("Error loading posts");
+
+    return results;
 }

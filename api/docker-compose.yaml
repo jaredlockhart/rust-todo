@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: systemfd --no-pid -s http::0.0.0.0:3000 -- cargo watch -x run
+    command: systemfd --no-pid -s http::0.0.0.0:3000 -- cargo watch -x 'run --bin rust_todo'
     ports:
       - "3000:3000"
     volumes:
@@ -16,4 +16,10 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db/todo
   db:
+    restart: always
     image: postgres:9.6
+    volumes:
+      - db_volume:/var/lib/postgresql
+
+volumes:
+  db_volume:
