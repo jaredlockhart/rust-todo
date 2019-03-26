@@ -2,25 +2,22 @@
 extern crate diesel;
 extern crate dotenv;
 
-
-use diesel::prelude::*;
 use diesel::pg::PgConnection;
+use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
 
-pub mod schema;
 pub mod models;
+pub mod schema;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
 
-    let database_url = env::var("DATABASE_URL")
-        .expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url)
-        .expect(&format!("Error connecting to {}", database_url))
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
-use self::models::{Todo, NewTodo};
+use self::models::{NewTodo, Todo};
 
 pub fn create_todo<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> Todo {
     use schema::todos;
@@ -36,11 +33,12 @@ pub fn create_todo<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> To
         .expect("Error saving new post")
 }
 
-pub fn get_todos(conn: &PgConnection) -> Vec<Todo>{
+pub fn get_todos(conn: &PgConnection) -> Vec<Todo> {
     use schema::todos::dsl::*;
 
     let connection = establish_connection();
-    let results = todos.filter(done.eq(false))
+    let results = todos
+        .filter(done.eq(false))
         .limit(5)
         .load::<Todo>(&connection)
         .expect("Error loading posts");
